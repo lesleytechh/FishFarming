@@ -1,56 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/undraw_fish_bowl_uu88" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="170dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="200dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="FishFarmer"
-            android:textSize="50sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/fishfarmer_schedules"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="2"
-            android:fontFamily="serif-monospace"
-            android:gravity="center"
-            android:text="Schedules"
-            android:textSize="45sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="22dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/orange"
-        android:text="+"
-        android:textSize="10dp" />
+        android:layout_centerInParent="true"
+        android:text="Main Activity Here"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/orange" />
 
 </RelativeLayout>
