@@ -13,8 +13,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="170dp"
-        android:layout_marginTop="200dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="200dp"
         android:orientation="vertical">
 
         <TextView
@@ -49,8 +49,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="22dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/DarkOrange"
-        android:onClick="nextActivity"
+        android:background="@color/orange"
         android:text="+"
         android:textSize="10dp" />
 
