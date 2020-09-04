@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 public class SplashActivity extends AppCompatActivity {
+    // initialize your views here
     private ActionBar actionBar;
     private View splashRootView;
     private ProgressBar loadingProgress;
@@ -19,6 +20,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        // an action bar is the top bar that appears in an app
+        // we want this splash screen to be fullscreen so we need to hide
+        // the action bar too. First let us get the action bar
         actionBar = getSupportActionBar();
 
         // find views by id first to avoid null pointer exceptions

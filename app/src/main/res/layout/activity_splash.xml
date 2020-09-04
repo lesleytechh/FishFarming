@@ -24,7 +24,7 @@
             android:id="@+id/splash_loading_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/large_spacing"
+            android:layout_marginTop="@dimen/very_large_spacing"
             android:indeterminateTint="@color/orange" />
 
     </LinearLayout>

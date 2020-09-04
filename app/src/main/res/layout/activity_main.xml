@@ -3,14 +3,54 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/spacing"
     tools:context=".MainActivity">
 
-    <TextView
+    <ProgressBar
+        android:id="@+id/main_loading_reminders"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="Main Activity Here"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@color/orange" />
+        android:indeterminateTint="@color/orange" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_reminders_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/main_nothing_here_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/illustration_image_size"
+            android:src="@drawable/noreminderillustration" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/no_reminders_yet"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/orange" />
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/main_add_reminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/circle"
+        android:padding="@dimen/spacing"
+        android:src="@drawable/add" />
 
 </RelativeLayout>

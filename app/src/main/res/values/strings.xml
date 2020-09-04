@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">Fish Farming Reminder</string>
-    <string name="title_activity_crap">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="no_reminders_yet">You have not added any reminders yet</string>
 </resources>
