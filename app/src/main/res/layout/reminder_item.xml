@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="230dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackground"
+    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardCornerRadius="30dp"
+    app:cardElevation="@dimen/small_spacing">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing">
+
+        <TextView
+            android:id="@+id/reminder_item_cost_of_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="NGN 500"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/white" />
+
+        <ImageView
+            android:id="@+id/reminder_item_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reminder_item_cost_of_stock"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/spacing"
+            android:scaleType="centerCrop"
+            android:src="@drawable/fingerling" />
+
+        <TextView
+            android:id="@+id/reminder_item_stock_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reminder_item_image"
+            android:layout_marginTop="@dimen/spacing"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Sample Stock 1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/reminder_item_feed_fish_every"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reminder_item_stock_name"
+            android:layout_marginTop="@dimen/spacing"
+            android:drawableStart="@drawable/feedfishevery"
+            android:drawablePadding="@dimen/small_spacing"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Feed fish every 2 hours"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/reminder_item_give_treatment_every"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reminder_item_feed_fish_every"
+            android:layout_marginTop="@dimen/small_spacing"
+            android:drawableStart="@drawable/givetreatmentevery"
+            android:drawablePadding="@dimen/small_spacing"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Give treatment every 3 weeks"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/reminder_item_change_water_every"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reminder_item_give_treatment_every"
+            android:layout_marginTop="@dimen/small_spacing"
+            android:drawableStart="@drawable/changewaterevery"
+            android:drawablePadding="@dimen/small_spacing"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Change water every 1 week"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/reminder_item_sort_fishes_every"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/reminder_item_change_water_every"
+            android:layout_marginTop="@dimen/small_spacing"
+            android:drawableStart="@drawable/sortfishevery"
+            android:drawablePadding="@dimen/small_spacing"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="Sort fishes every 5 months"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

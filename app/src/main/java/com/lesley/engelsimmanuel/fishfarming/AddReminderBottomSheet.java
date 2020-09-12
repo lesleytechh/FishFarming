@@ -2,6 +2,7 @@ package com.lesley.engelsimmanuel.fishfarming;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -182,7 +183,20 @@ public class AddReminderBottomSheet extends BottomSheetDialogFragment {
     }
 
     private void addReminderToDatabase() {
-        necessaryEvil.log(TAG, "add reminder to database here");
+        ReminderViewModel reminderViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getActivity().getApplication())).get(ReminderViewModel.class);
+
+        reminderViewModel.insert(new Reminder(stockName.getText().toString(), stockDate.getText().toString(),
+                selectStockCostCurrency.getSelectedItem().toString(), stockCost.getText().toString(),
+                selectStockStage.getSelectedItem().toString(), stockHarvestDate.getText().toString(),
+                feedFrequency.getText().toString(), selectFeedFrequencyOccurence.getSelectedItem().toString(),
+                treatmentFrequency.getText().toString(), selectTreatmentFrequencyOccurence.getSelectedItem().toString(),
+                changeFrequency.getText().toString(), selectChangeFrequencyOccurence.getSelectedItem().toString(),
+                sortFrequency.getText().toString(), selectSortFrequencyOccurence.getSelectedItem().toString()));
+
+        necessaryEvil.showToast(getContext(), "Reminder Added");
+
+        dismiss();
+
     }
 
 }
