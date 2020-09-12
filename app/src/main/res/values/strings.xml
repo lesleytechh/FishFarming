@@ -1,4 +1,38 @@
 <resources>
     <string name="app_name">Fish Farming Reminder</string>
     <string name="no_reminders_yet">You have not added any reminders yet</string>
+    <string name="stock_name">Stock name</string>
+    <string name="stock_date">Date stocked</string>
+    <string name="select">Select</string>
+    <string-array name="stock_cost_currency">
+        <item>₦</item>
+        <item>$</item>
+        <item>€</item>
+        <item>￥</item>
+    </string-array>
+    <string name="stock_cost">Cost of Stock</string>
+    <string name="select_stock_stage">Select stock stage</string>
+    <string-array name="stock_stage">
+        <item>Fingerling</item>
+        <item>Juvenile</item>
+        <item>Post Juvenile</item>
+    </string-array>
+    <string name="stock_harvest_date">Expected date of harvest</string>
+    <string name="feed_fish_every">Feed fish every</string>
+    <string name="give_treatment_every">Give treatment every</string>
+    <string name="change_water_every">Change water every</string>
+    <string name="sort_fishes_every">Sort fishes every</string>
+    <string name="eg2">e.g. 2</string>
+    <string name="eg4">e.g. 4</string>
+    <string name="eg1">e.g. 1</string>
+    <string name="eg3">e.g. 3</string>
+    <string name="add">Add</string>
+    <string name="dismiss">Dismiss</string>
+    <string-array name="frequency">
+        <item>Hour(s)</item>
+        <item>Day(s)</item>
+        <item>Week(s)</item>
+        <item>Month(s)</item>
+        <item>Year(s)</item>
+    </string-array>
 </resources>

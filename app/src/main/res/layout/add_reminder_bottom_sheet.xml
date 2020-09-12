@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusableInTouchMode="true"
+    android:padding="@dimen/small_spacing"
+    tools:context=".AddReminderBottomSheet">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_spacing">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/stock_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittextbackground"
+            android:hint="@string/stock_name"
+            android:padding="@dimen/spacing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/stock_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginEnd="@dimen/spacing"
+            android:background="@drawable/roundedittextcornersunselected"
+            android:enabled="false"
+            android:hint="@string/stock_date"
+            android:padding="@dimen/spacing"
+            app:layout_constraintEnd_toStartOf="@id/select_stock_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stock_name" />
+
+        <Button
+            android:id="@+id/select_stock_date"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/roundbutton"
+            android:paddingHorizontal="@dimen/spacing"
+            android:text="@string/select"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/stock_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stock_date"
+            app:layout_constraintTop_toTopOf="@id/stock_date" />
+
+        <Spinner
+            android:id="@+id/select_stock_cost_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/spacing"
+            android:entries="@array/stock_cost_currency"
+            app:layout_constraintBottom_toBottomOf="@id/stock_cost"
+            app:layout_constraintEnd_toStartOf="@id/stock_cost"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/stock_cost" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/stock_cost"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:background="@drawable/edittextbackground"
+            android:hint="@string/stock_cost"
+            android:inputType="number"
+            android:padding="@dimen/spacing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/select_stock_cost_currency"
+            app:layout_constraintTop_toBottomOf="@id/stock_date" />
+
+        <TextView
+            android:id="@+id/stock_stage_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/select_stock_stage"
+            android:paddingVertical="@dimen/spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/select_stock_stage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stock_cost" />
+
+        <Spinner
+            android:id="@+id/select_stock_stage"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:entries="@array/stock_stage"
+            app:layout_constraintBottom_toBottomOf="@id/stock_stage_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stock_stage_text"
+            app:layout_constraintTop_toTopOf="@id/stock_stage_text" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/stock_harvest_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginEnd="@dimen/spacing"
+            android:background="@drawable/roundedittextcornersunselected"
+            android:enabled="false"
+            android:hint="@string/stock_harvest_date"
+            android:padding="@dimen/spacing"
+            app:layout_constraintEnd_toStartOf="@id/select_stock_harvest_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stock_stage_text" />
+
+        <Button
+            android:id="@+id/select_stock_harvest_date"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:background="@drawable/roundbutton"
+            android:paddingHorizontal="@dimen/spacing"
+            android:text="@string/select"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/stock_harvest_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stock_harvest_date"
+            app:layout_constraintTop_toTopOf="@id/stock_harvest_date" />
+
+        <TextView
+            android:id="@+id/feed_fish_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/feed_fish_every"
+            android:paddingVertical="@dimen/spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/feed_frequency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/stock_harvest_date" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/feed_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/eg2"
+            android:inputType="number"
+            android:paddingHorizontal="@dimen/spacing"
+            app:layout_constraintBottom_toBottomOf="@id/feed_fish_text"
+            app:layout_constraintEnd_toStartOf="@id/select_feed_frequency_occurence"
+            app:layout_constraintStart_toEndOf="@id/feed_fish_text"
+            app:layout_constraintTop_toTopOf="@id/feed_fish_text" />
+
+        <Spinner
+            android:id="@+id/select_feed_frequency_occurence"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:entries="@array/frequency"
+            app:layout_constraintBottom_toBottomOf="@id/feed_frequency"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/feed_frequency"
+            app:layout_constraintTop_toTopOf="@id/feed_frequency" />
+
+        <TextView
+            android:id="@+id/give_treatment_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/give_treatment_every"
+            android:paddingVertical="@dimen/spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/treatment_frequency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/feed_fish_text" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/treatment_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/eg4"
+            android:inputType="number"
+            android:paddingHorizontal="@dimen/spacing"
+            app:layout_constraintBottom_toBottomOf="@id/give_treatment_text"
+            app:layout_constraintEnd_toStartOf="@id/select_treatment_frequency_occurence"
+            app:layout_constraintStart_toEndOf="@id/give_treatment_text"
+            app:layout_constraintTop_toTopOf="@id/give_treatment_text" />
+
+        <Spinner
+            android:id="@+id/select_treatment_frequency_occurence"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:entries="@array/frequency"
+            app:layout_constraintBottom_toBottomOf="@id/treatment_frequency"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/treatment_frequency"
+            app:layout_constraintTop_toTopOf="@id/treatment_frequency" />
+
+        <TextView
+            android:id="@+id/change_water_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/change_water_every"
+            android:paddingVertical="@dimen/spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/change_frequency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/give_treatment_text" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/change_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/eg1"
+            android:inputType="number"
+            android:paddingHorizontal="@dimen/spacing"
+            app:layout_constraintBottom_toBottomOf="@id/change_water_text"
+            app:layout_constraintEnd_toStartOf="@id/select_change_frequency_occurence"
+            app:layout_constraintStart_toEndOf="@id/change_water_text"
+            app:layout_constraintTop_toTopOf="@id/change_water_text" />
+
+        <Spinner
+            android:id="@+id/select_change_frequency_occurence"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:entries="@array/frequency"
+            app:layout_constraintBottom_toBottomOf="@id/change_frequency"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/change_frequency"
+            app:layout_constraintTop_toTopOf="@id/change_frequency" />
+
+        <TextView
+            android:id="@+id/sort_fishes_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/sort_fishes_every"
+            android:paddingVertical="@dimen/spacing"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/sort_frequency"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/change_water_text" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/sort_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/spacing"
+            android:hint="@string/eg3"
+            android:inputType="number"
+            android:paddingHorizontal="@dimen/spacing"
+            app:layout_constraintBottom_toBottomOf="@id/sort_fishes_text"
+            app:layout_constraintEnd_toStartOf="@id/select_sort_frequency_occurence"
+            app:layout_constraintStart_toEndOf="@id/sort_fishes_text"
+            app:layout_constraintTop_toTopOf="@id/sort_fishes_text" />
+
+        <Spinner
+            android:id="@+id/select_sort_frequency_occurence"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:entries="@array/frequency"
+            app:layout_constraintBottom_toBottomOf="@id/sort_frequency"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sort_frequency"
+            app:layout_constraintTop_toTopOf="@id/sort_frequency" />
+
+        <Button
+            android:id="@+id/add_reminder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_spacing"
+            android:layout_marginBottom="@dimen/small_spacing"
+            android:background="@drawable/roundbutton"
+            android:text="@string/add"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sort_fishes_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
