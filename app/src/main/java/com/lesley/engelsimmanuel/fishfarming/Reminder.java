@@ -73,6 +73,10 @@ public class Reminder {
         this.id = id;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getStockName() {
         return stockName;
     }

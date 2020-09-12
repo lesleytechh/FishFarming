@@ -1,5 +1,6 @@
 package com.lesley.engelsimmanuel.fishfarming;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -24,6 +25,6 @@ public interface ReminderDao {
     void deleteAllReminders();
 
     @Query("SELECT * FROM reminder_table ORDER BY id DESC")
-    List<Reminder> getAllReminders();
+    LiveData<List<Reminder>> getAllReminders();
 
 }
