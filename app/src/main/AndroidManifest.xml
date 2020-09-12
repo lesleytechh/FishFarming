@@ -22,10 +22,6 @@
             android:name=".MainActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".AddReminderBottomSheet"
-            android:configChanges="orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
