@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         nothingHerelayout = findViewById(R.id.main_nothing_here_layout);
         addReminder = findViewById(R.id.main_add_reminder);
 
-        remindersRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        remindersRecyclerView.setLayoutManager(new GridLayoutManager(this, calculateNumberOfColumns(getApplicationContext(), 230)));
         remindersRecyclerView.setHasFixedSize(true);
 
         reminderAdapter = new ReminderAdapter();
@@ -80,7 +82,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // adapter class for recycler view
+    private int calculateNumberOfColumns(Context context, float columnWidthInDp) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float screenWidthInDp = displayMetrics.widthPixels / displayMetrics.density;
+        return (int) (screenWidthInDp / columnWidthInDp + 0.5);
+    }
+
+    // recycler view adapter class
     public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder> {
         private List<Reminder> reminders = new ArrayList<>();
 
@@ -92,15 +100,38 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ReminderViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull ReminderViewHolder holder, final int position) {
             Reminder reminder = reminders.get(position);
             holder.costOfStock.setText(reminder.getCurrencyOfCostOfStock() + " " + reminder.getCostOfStock());
             holder.setImage(reminder.getStockStage());
-            holder.stockName.setText(reminder.getStockName());
+            holder.stockName.setText(reminder.getStockName() + ", " + reminder.getStockStage());
             holder.feedFishEvery.setText("Feed fish every " + reminder.getFeedFishFrequency() + " " + reminder.getFeedFishFrequencyOccurrence());
             holder.giveTreatmentEvery.setText("Give treatment every " + reminder.getTreatFishFrequency() + " " + reminder.getTreatFishFrequencyOccurrence());
             holder.changeWaterEvery.setText("Change water every " + reminder.getChangeWaterFrequency() + " " + reminder.getChangeWaterFrequencyOccurrence());
             holder.sortFishesEvery.setText("Sort fishes every " + reminder.getSortFishFrequency() + " " + reminder.getSortFishFrequencyOccurrence());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, ReminderDetailsActivity.class);
+                    intent.putExtra("stock_name", reminders.get(position).getStockName());
+                    intent.putExtra("date_stocked", reminders.get(position).getDateStocked());
+                    intent.putExtra("currency_of_cost_of_stock", reminders.get(position).getCurrencyOfCostOfStock());
+                    intent.putExtra("cost_of_stock", reminders.get(position).getCostOfStock());
+                    intent.putExtra("stock_stage", reminders.get(position).getStockStage());
+                    intent.putExtra("expected_date_of_harvest", reminders.get(position).getExpectedDateOfHarvest());
+                    intent.putExtra("feed_fish_frequency", reminders.get(position).getFeedFishFrequency());
+                    intent.putExtra("feed_fish_frequency_occurrence", reminders.get(position).getFeedFishFrequencyOccurrence());
+                    intent.putExtra("treat_fish_frequency", reminders.get(position).getTreatFishFrequency());
+                    intent.putExtra("treat_fish_frequency_occurrence", reminders.get(position).getTreatFishFrequencyOccurrence());
+                    intent.putExtra("change_water_frequency", reminders.get(position).getChangeWaterFrequency());
+                    intent.putExtra("change_water_frequency_occurrence", reminders.get(position).getChangeWaterFrequencyOccurrence());
+                    intent.putExtra("sort_fish_frequency", reminders.get(position).getSortFishFrequency());
+                    intent.putExtra("sort_fish_frequency_occurrence", reminders.get(position).getSortFishFrequencyOccurrence());
+                    startActivity(intent);
+                }
+            });
+
         }
 
         @Override
@@ -137,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
                     image.setImageResource(R.drawable.postjuvenile);
                 }
             }
-
         }
 
     }

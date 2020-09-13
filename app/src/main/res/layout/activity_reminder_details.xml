@@ -1,10 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:padding="@dimen/small_spacing"
     tools:context=".ReminderDetailsActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/small_spacing"
+        android:layout_marginTop="@dimen/small_spacing"
+        android:layout_marginBottom="@dimen/large_spacing"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/reminder_details_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:src="@drawable/close" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing"
+            android:src="@drawable/notificationwhitelarge" />
+
+        <ImageView
+            android:id="@+id/reminder_details_aquarium_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing"
+            android:src="@drawable/aquarium" />
+
+        <TextView
+            android:id="@+id/reminder_details_stock_name_stage_and_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/spacing"
+            android:gravity="center"
+            android:text="Stock 1, Fingerling, cost NGN 500"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/reminder_details_date_stocked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:drawableStart="@drawable/calendar"
+            android:drawablePadding="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:text="Date stocked"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/reminder_details_expected_date_of_harvest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing"
+            android:drawableStart="@drawable/calendar"
+            android:drawablePadding="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:text="Expected date of harvest"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:drawableEnd="@drawable/alarm"
+            android:drawablePadding="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:text="Remind me to"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/reminder_details_feed_fish_every"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing"
+            android:drawableStart="@drawable/feedfishevery"
+            android:drawablePadding="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:text="Feed fish every"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/reminder_details_give_treatment_every"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing"
+            android:drawableStart="@drawable/givetreatmentevery"
+            android:drawablePadding="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:text="Give treatment every"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/reminder_details_change_water_every"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing"
+            android:drawableStart="@drawable/changewaterevery"
+            android:drawablePadding="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:text="Change water every"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/reminder_details_sort_fish_every"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_spacing"
+            android:drawableStart="@drawable/sortfishevery"
+            android:drawablePadding="@dimen/small_spacing"
+            android:gravity="center_vertical"
+            android:text="Sort fishes every"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/reminder_details_edit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/large_spacing"
+            android:background="@drawable/roundbuttonwhite"
+            android:text="@string/edit"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/reminder_details_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/spacing"
+            android:background="@drawable/roundbuttonwhite"
+            android:text="@string/delete"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary" />
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
