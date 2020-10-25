@@ -127,26 +127,6 @@
             android:text="Sort fishes every"
             android:textColor="@color/white" />
 
-        <Button
-            android:id="@+id/reminder_details_edit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/large_spacing"
-            android:background="@drawable/roundbuttonwhite"
-            android:text="@string/edit"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimary" />
-
-        <Button
-            android:id="@+id/reminder_details_delete"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/spacing"
-            android:background="@drawable/roundbuttonwhite"
-            android:text="@string/delete"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimary" />
-
     </LinearLayout>
 
 </androidx.core.widget.NestedScrollView>

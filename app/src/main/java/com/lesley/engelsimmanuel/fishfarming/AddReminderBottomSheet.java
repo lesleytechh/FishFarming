@@ -56,6 +56,23 @@ public class AddReminderBottomSheet extends BottomSheetDialogFragment {
         selectSortFrequencyOccurence = view.findViewById(R.id.select_sort_frequency_occurence);
         addReminder = view.findViewById(R.id.add_reminder);
 
+        /*if(getArguments().getBoolean("is_from_edit")){
+            stockName.setText(getArguments().getString(""));
+            stockDate.setText(getArguments().getString(""));
+            //selectStockCostCurrency.setSelection();
+            stockCost.setText(getArguments().getString(""));
+            //selectStockStage.setSelection();
+            stockHarvestDate.setText(getArguments().getString(""));
+            feedFrequency.setText(getArguments().getString(""));
+            //selectFeedFrequencyOccurence.setSelection();
+            treatmentFrequency.setText(getArguments().getString(""));
+            //selectTreatmentFrequencyOccurence.setSelection();
+            changeFrequency.setText(getArguments().getString(""));
+            //selectChangeFrequencyOccurence.setSelection();
+            sortFrequency.setText(getArguments().getString(""));
+            //selectSortFrequencyOccurence.setSelection();
+        }*/
+
         selectStockDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

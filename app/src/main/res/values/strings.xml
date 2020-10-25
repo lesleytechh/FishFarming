@@ -28,8 +28,8 @@
     <string name="eg3">e.g. 3</string>
     <string name="add">Add</string>
     <string name="dismiss">Dismiss</string>
-    <string name="edit">Edit this reminder</string>
-    <string name="delete">Delete this reminder</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
     <string-array name="frequency">
         <item>Hour(s)</item>
         <item>Day(s)</item>

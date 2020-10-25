@@ -5,10 +5,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageButton
+        android:id="@+id/main_reminders_show_information"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="@dimen/spacing"
+        android:background="@android:color/transparent"
+        android:src="@drawable/information" />
+
+    <ProgressBar
+        android:id="@+id/main_reminders_loading_reminders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="@dimen/spacing"
+        android:indeterminateTint="@color/colorPrimary"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_reminders_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/main_reminders_show_information"
+        android:layout_marginTop="@dimen/spacing"
         android:visibility="gone" />
 
     <LinearLayout
@@ -19,7 +39,7 @@
         android:layout_margin="@dimen/spacing"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="match_parent"

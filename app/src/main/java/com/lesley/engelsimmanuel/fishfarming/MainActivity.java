@@ -1,36 +1,38 @@
 package com.lesley.engelsimmanuel.fishfarming;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ReminderAdapter.OnReminderClickListener {
     // initialize your views here
+    private ImageButton showInformation;
+    private ProgressBar loadingReminders;
     private RecyclerView remindersRecyclerView;
     private ReminderAdapter reminderAdapter;
     private LinearLayout nothingHerelayout;
     private FloatingActionButton addReminder;
     private NecessaryEvil necessaryEvil = new NecessaryEvil();
     private ReminderViewModel reminderViewModel;
+    private List<Reminder> reminders;
 
     private String TAG = "MainActivity";
 
@@ -40,30 +42,44 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // match initialized views to their individual ID's here
+        showInformation = findViewById(R.id.main_reminders_show_information);
+        loadingReminders = findViewById(R.id.main_reminders_loading_reminders);
         remindersRecyclerView = findViewById(R.id.main_reminders_recycler_view);
         nothingHerelayout = findViewById(R.id.main_nothing_here_layout);
         addReminder = findViewById(R.id.main_add_reminder);
 
+        reminders = new ArrayList<>();
+
+        if (loadingReminders.getVisibility() == View.GONE) {
+            loadingReminders.setVisibility(View.VISIBLE);
+        }
+
         remindersRecyclerView.setLayoutManager(new GridLayoutManager(this, calculateNumberOfColumns(getApplicationContext(), 230)));
         remindersRecyclerView.setHasFixedSize(true);
 
-        reminderAdapter = new ReminderAdapter();
-        remindersRecyclerView.setAdapter(reminderAdapter);
+        necessaryEvil.log(TAG, "reminders size: " + reminders.size());
 
         reminderViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getApplication())).get(ReminderViewModel.class);
-
         reminderViewModel.getAllReminders().observe(this, new Observer<List<Reminder>>() {
             @Override
-            public void onChanged(List<Reminder> reminders) {
+            public void onChanged(List<Reminder> observedReminders) {
+                reminders = observedReminders;
+
                 if (reminders.size() == 0) {
                     remindersRecyclerView.setVisibility(View.GONE);
                     nothingHerelayout.setVisibility(View.VISIBLE);
                 } else {
-                    reminderAdapter.setReminders(reminders);
+                    reminderAdapter = new ReminderAdapter(reminders, MainActivity.this);
+                    remindersRecyclerView.setAdapter(reminderAdapter);
+                    reminderAdapter.notifyDataSetChanged();
+
                     remindersRecyclerView.setVisibility(View.VISIBLE);
                     nothingHerelayout.setVisibility(View.GONE);
                 }
-                necessaryEvil.log(TAG, "reminders size: " + reminders.size());
+
+                if (loadingReminders.getVisibility() == View.VISIBLE) {
+                    loadingReminders.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -75,8 +91,59 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // show addReminderBottomSheet onClick this button
-                AddReminderBottomSheet addReminderBottomSheet = new AddReminderBottomSheet();
-                addReminderBottomSheet.show(getSupportFragmentManager(), "addReminderBottomSheet");
+                showAddReminderBottomSheet(false, null);
+            }
+        });
+
+        showInformation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                necessaryEvil.showErrorDialog(new Dialog(MainActivity.this), "What's This?", "Long press a reminder to show more options. Click on a reminder to view reminder details");
+            }
+        });
+    }
+
+    @Override
+    public void onReminderClick(int position) {
+        necessaryEvil.log(TAG, "onReminderClick position: " + position);
+        Intent intent = new Intent(MainActivity.this, ReminderDetailsActivity.class);
+        intent.putExtra("id", reminders.get(position).getId());
+        intent.putExtra("stock_name", reminders.get(position).getStockName());
+        intent.putExtra("date_stocked", reminders.get(position).getDateStocked());
+        intent.putExtra("currency_of_cost_of_stock", reminders.get(position).getCurrencyOfCostOfStock());
+        intent.putExtra("cost_of_stock", reminders.get(position).getCostOfStock());
+        intent.putExtra("stock_stage", reminders.get(position).getStockStage());
+        intent.putExtra("expected_date_of_harvest", reminders.get(position).getExpectedDateOfHarvest());
+        intent.putExtra("feed_fish_frequency", reminders.get(position).getFeedFishFrequency());
+        intent.putExtra("feed_fish_frequency_occurrence", reminders.get(position).getFeedFishFrequencyOccurrence());
+        intent.putExtra("treat_fish_frequency", reminders.get(position).getTreatFishFrequency());
+        intent.putExtra("treat_fish_frequency_occurrence", reminders.get(position).getTreatFishFrequencyOccurrence());
+        intent.putExtra("change_water_frequency", reminders.get(position).getChangeWaterFrequency());
+        intent.putExtra("change_water_frequency_occurrence", reminders.get(position).getChangeWaterFrequencyOccurrence());
+        intent.putExtra("sort_fish_frequency", reminders.get(position).getSortFishFrequency());
+        intent.putExtra("sort_fish_frequency_occurrence", reminders.get(position).getSortFishFrequencyOccurrence());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onReminderLongClick(final Reminder reminder, int position) {
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(getLayoutInflater().inflate(R.layout.edit_delete_bottom_sheet_dialog, null));
+        bottomSheetDialog.show();
+
+        bottomSheetDialog.findViewById(R.id.edit_delete_bottom_sheet_dialog_edit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddReminderBottomSheet(true, reminder);
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        bottomSheetDialog.findViewById(R.id.edit_delete_bottom_sheet_dialog_delete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reminderViewModel.delete(reminder);
+                bottomSheetDialog.dismiss();
             }
         });
 
@@ -88,88 +155,41 @@ public class MainActivity extends AppCompatActivity {
         return (int) (screenWidthInDp / columnWidthInDp + 0.5);
     }
 
-    // recycler view adapter class
-    public class ReminderAdapter extends RecyclerView.Adapter<ReminderAdapter.ReminderViewHolder> {
-        private List<Reminder> reminders = new ArrayList<>();
-
-        @NonNull
-        @Override
-        public ReminderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.reminder_item, parent, false);
-            return new ReminderViewHolder(view);
+    private void showAddReminderBottomSheet(Boolean isFromEdit, Reminder reminder) {
+        AddReminderBottomSheet addReminderBottomSheet = new AddReminderBottomSheet();
+        if (isFromEdit) {
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("is_from_edit", true);
+            bundle.putString("stock_name", reminder.getStockName());
+            bundle.putString("date_stocked", reminder.getStockName());
+            bundle.putString("currency_of_cost_of_stock", reminder.getStockName());
+            bundle.putString("cost_of_stock", reminder.getStockName());
+            bundle.putString("stock_stage", reminder.getStockName());
+            bundle.putString("expected_date_of_harvest", reminder.getStockName());
+            bundle.putString("feed_fish_frequency", reminder.getStockName());
+            bundle.putString("feed_fish_frequency_occurrence", reminder.getStockName());
+            bundle.putString("treat_fish_frequency", reminder.getStockName());
+            bundle.putString("treat_fish_frequency_occurrence", reminder.getStockName());
+            bundle.putString("change_water_frequency", reminder.getStockName());
+            bundle.putString("change_water_frequency_occurrence", reminder.getStockName());
+            bundle.putString("sort_fish_frequency", reminder.getStockName());
+            bundle.putString("sort_fish_frequency_occurrence", reminder.getStockName());
+            addReminderBottomSheet.setArguments(bundle);
         }
-
-        @Override
-        public void onBindViewHolder(@NonNull ReminderViewHolder holder, final int position) {
-            Reminder reminder = reminders.get(position);
-            holder.costOfStock.setText(reminder.getCurrencyOfCostOfStock() + " " + reminder.getCostOfStock());
-            holder.setImage(reminder.getStockStage());
-            holder.stockName.setText(reminder.getStockName() + ", " + reminder.getStockStage());
-            holder.feedFishEvery.setText("Feed fish every " + reminder.getFeedFishFrequency() + " " + reminder.getFeedFishFrequencyOccurrence());
-            holder.giveTreatmentEvery.setText("Give treatment every " + reminder.getTreatFishFrequency() + " " + reminder.getTreatFishFrequencyOccurrence());
-            holder.changeWaterEvery.setText("Change water every " + reminder.getChangeWaterFrequency() + " " + reminder.getChangeWaterFrequencyOccurrence());
-            holder.sortFishesEvery.setText("Sort fishes every " + reminder.getSortFishFrequency() + " " + reminder.getSortFishFrequencyOccurrence());
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, ReminderDetailsActivity.class);
-                    intent.putExtra("stock_name", reminders.get(position).getStockName());
-                    intent.putExtra("date_stocked", reminders.get(position).getDateStocked());
-                    intent.putExtra("currency_of_cost_of_stock", reminders.get(position).getCurrencyOfCostOfStock());
-                    intent.putExtra("cost_of_stock", reminders.get(position).getCostOfStock());
-                    intent.putExtra("stock_stage", reminders.get(position).getStockStage());
-                    intent.putExtra("expected_date_of_harvest", reminders.get(position).getExpectedDateOfHarvest());
-                    intent.putExtra("feed_fish_frequency", reminders.get(position).getFeedFishFrequency());
-                    intent.putExtra("feed_fish_frequency_occurrence", reminders.get(position).getFeedFishFrequencyOccurrence());
-                    intent.putExtra("treat_fish_frequency", reminders.get(position).getTreatFishFrequency());
-                    intent.putExtra("treat_fish_frequency_occurrence", reminders.get(position).getTreatFishFrequencyOccurrence());
-                    intent.putExtra("change_water_frequency", reminders.get(position).getChangeWaterFrequency());
-                    intent.putExtra("change_water_frequency_occurrence", reminders.get(position).getChangeWaterFrequencyOccurrence());
-                    intent.putExtra("sort_fish_frequency", reminders.get(position).getSortFishFrequency());
-                    intent.putExtra("sort_fish_frequency_occurrence", reminders.get(position).getSortFishFrequencyOccurrence());
-                    startActivity(intent);
-                }
-            });
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return reminders.size();
-        }
-
-        public void setReminders(List<Reminder> reminders) {
-            this.reminders = reminders;
-            notifyDataSetChanged();
-        }
-
-        class ReminderViewHolder extends RecyclerView.ViewHolder {
-            private TextView costOfStock, stockName, feedFishEvery, giveTreatmentEvery, changeWaterEvery, sortFishesEvery;
-            private ImageView image;
-
-            public ReminderViewHolder(@NonNull View itemView) {
-                super(itemView);
-                costOfStock = itemView.findViewById(R.id.reminder_item_cost_of_stock);
-                image = itemView.findViewById(R.id.reminder_item_image);
-                stockName = itemView.findViewById(R.id.reminder_item_stock_name);
-                feedFishEvery = itemView.findViewById(R.id.reminder_item_feed_fish_every);
-                giveTreatmentEvery = itemView.findViewById(R.id.reminder_item_give_treatment_every);
-                changeWaterEvery = itemView.findViewById(R.id.reminder_item_change_water_every);
-                sortFishesEvery = itemView.findViewById(R.id.reminder_item_sort_fishes_every);
-            }
-
-            private void setImage(String from) {
-                if (from.equals("Fingerling")) {
-                    image.setImageResource(R.drawable.fingerling);
-                } else if (from.equals("Juvenile")) {
-                    image.setImageResource(R.drawable.juvenile);
-                } else {
-                    image.setImageResource(R.drawable.postjuvenile);
-                }
-            }
-        }
-
+        addReminderBottomSheet.show(getSupportFragmentManager(), "addReminderBottomSheet");
     }
 
+    /*
+
+    private void deleteReminder() {
+        ReminderViewModel reminderViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(ReminderDetailsActivity.this.getApplication())).get(ReminderViewModel.class);
+        reminderViewModel.delete(new Reminder(getIntent().getStringExtra("stock_name"), getIntent().getStringExtra("date_stocked"),
+                getIntent().getStringExtra("currency_of_cost_of_stock"), getIntent().getStringExtra("cost_of_stock"),
+                getIntent().getStringExtra("stock_stage"), getIntent().getStringExtra("expected_date_of_harvest"),
+                getIntent().getStringExtra("feed_fish_frequency"), getIntent().getStringExtra("feed_fish_frequency_occurrence"),
+                getIntent().getStringExtra("treat_fish_frequency"), getIntent().getStringExtra("treat_fish_frequency_occurrence"),
+                getIntent().getStringExtra("change_water_frequency"), getIntent().getStringExtra("change_water_frequency_occurrence"),
+                getIntent().getStringExtra("sort_fish_frequency"), getIntent().getStringExtra("sort_fish_frequency_occurrence")));
+        finish();
+    }*/
 }
