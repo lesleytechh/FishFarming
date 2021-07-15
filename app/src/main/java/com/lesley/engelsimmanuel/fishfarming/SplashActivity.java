@@ -9,8 +9,12 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class SplashActivity extends AppCompatActivity {
     // initialize your views here
+    private FirebaseUser user;
     private ActionBar actionBar;
     private View splashRootView;
     private ProgressBar loadingProgress;
@@ -23,6 +27,7 @@ public class SplashActivity extends AppCompatActivity {
         // an action bar is the top bar that appears in an app
         // we want this splash screen to be fullscreen so we need to hide
         // the action bar too. First let us get the action bar
+        user = FirebaseAuth.getInstance().getCurrentUser();
         actionBar = getSupportActionBar();
 
         // find views by id first to avoid null pointer exceptions
@@ -49,7 +54,7 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 loadingProgress.setVisibility(View.VISIBLE);
             }
-        }, 3000);
+        }, 1500);
 
         // call this method
         finishThisActivity();
@@ -62,12 +67,16 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
                 // go to another activity
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                if (user != null) {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                } else {
+                    startActivity(new Intent(SplashActivity.this, SignInActivity.class));
+                }
 
-                // destroy this activity after going to another activity
+                // destroy this activity after going to the other activity
                 finish();
             }
-        }, 5000);
+        }, 2500);
     }
 
 }

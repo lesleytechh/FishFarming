@@ -11,6 +11,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class NecessaryEvil {
+    public void showLoadingDialog(final Dialog d, String loadingBody) {
+        d.setContentView(R.layout.loading_dialog);
+        d.setCanceledOnTouchOutside(false);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(d.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        d.getWindow().setAttributes(lp);
+        d.show();
+
+        TextView lText = d.findViewById(R.id.loading_dialog_loading_text);
+        lText.setText(loadingBody);
+    }
 
     public void showErrorDialog(final Dialog d, String errorTitle, String errorBody) {
         d.setContentView(R.layout.error_dialog);

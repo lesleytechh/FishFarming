@@ -30,6 +30,18 @@
     <string name="dismiss">Dismiss</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="name">Name</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="unimplemented">This feature has not been implemented</string>
+    <string name="empty_fields">Required fields are empty</string>
+    <string name="password_mismatch">Passwords do not match</string>
+    <string name="authenticating">Authenticating...</string>
+    <string name="creating_user">Creating User...</string>
     <string-array name="frequency">
         <item>Hour(s)</item>
         <item>Day(s)</item>

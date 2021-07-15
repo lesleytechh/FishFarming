@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "747184150799",
+    "project_id": "fish-farming-7f513",
+    "storage_bucket": "fish-farming-7f513.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:747184150799:android:ac41c69daa2b1d9610867a",
+        "android_client_info": {
+          "package_name": "com.lesley.engelsimmanuel.fishfarming"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "747184150799-lkj8ae72htvsnti30ob6sb35btnr4hol.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBU6uovoN3_HD5lFQb28aXIJ0e5WCETdys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "747184150799-lkj8ae72htvsnti30ob6sb35btnr4hol.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
