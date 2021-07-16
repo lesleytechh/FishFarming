@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="@dimen/spacing"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/roundbutton"
         android:text="@string/dismiss"
         android:textAllCaps="false"
         android:textColor="@color/white" />

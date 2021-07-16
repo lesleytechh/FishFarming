@@ -1,7 +1,9 @@
 package com.lesley.engelsimmanuel.fishfarming;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -9,6 +11,8 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class NecessaryEvil {
     public void showLoadingDialog(final Dialog d, String loadingBody) {
@@ -46,6 +50,42 @@ public class NecessaryEvil {
             @Override
             public void onClick(View v) {
                 d.dismiss();
+            }
+        });
+    }
+
+    public void showSignOutDialog(Activity currentActivity, Class destinationActivityClass, final Dialog d, String title, String body) {
+        d.setContentView(R.layout.sign_out_dialog);
+        d.setCanceledOnTouchOutside(true);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(d.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.gravity = Gravity.CENTER;
+        d.getWindow().setAttributes(lp);
+        d.show();
+
+        TextView sTitle = d.findViewById(R.id.sign_out_dialog_title);
+        TextView sText = d.findViewById(R.id.sign_out_dialog_text);
+        Button sNegButton = d.findViewById(R.id.sign_out_dialog_negative_button);
+        Button sPosButton = d.findViewById(R.id.sign_out_dialog_positive_button);
+
+        sTitle.setText(title);
+        sText.setText(body);
+
+        sNegButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+            }
+        });
+
+        sPosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                d.dismiss();
+                FirebaseAuth.getInstance().signOut();
+                currentActivity.startActivity(new Intent(currentActivity, destinationActivityClass));
+                currentActivity.finish();
             }
         });
     }

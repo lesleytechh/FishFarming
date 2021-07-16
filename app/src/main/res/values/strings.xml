@@ -42,6 +42,8 @@
     <string name="password_mismatch">Passwords do not match</string>
     <string name="authenticating">Authenticating...</string>
     <string name="creating_user">Creating User...</string>
+    <string name="nope">Nope</string>
+    <string name="yep">Yep</string>
     <string-array name="frequency">
         <item>Hour(s)</item>
         <item>Day(s)</item>

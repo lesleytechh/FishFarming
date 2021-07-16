@@ -1,5 +1,6 @@
 package com.lesley.engelsimmanuel.fishfarming;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -12,19 +13,31 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ReminderAdapter.OnReminderClickListener {
     // initialize your views here
+    private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
+    private TextView userName;
     private ImageButton showInformation;
+    private ImageButton signOut;
     private ProgressBar loadingReminders;
     private RecyclerView remindersRecyclerView;
     private ReminderAdapter reminderAdapter;
@@ -42,11 +55,30 @@ public class MainActivity extends AppCompatActivity implements ReminderAdapter.O
         setContentView(R.layout.activity_main);
 
         // match initialized views to their individual ID's here
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        userName = findViewById(R.id.main_user_name);
         showInformation = findViewById(R.id.main_reminders_show_information);
+        signOut = findViewById(R.id.main_reminders_sign_out);
         loadingReminders = findViewById(R.id.main_reminders_loading_reminders);
         remindersRecyclerView = findViewById(R.id.main_reminders_recycler_view);
         nothingHerelayout = findViewById(R.id.main_nothing_here_layout);
         addReminder = findViewById(R.id.main_add_reminder);
+
+        userName.setText("...");
+
+        firestore.collection("Users").document(auth.getCurrentUser().getUid()).addSnapshotListener(MainActivity.this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    return;
+                }
+
+                if (value != null && value.exists()) {
+                    userName.setText(value.getString("name"));
+                }
+            }
+        });
 
         reminders = new ArrayList<>();
 
@@ -99,6 +131,13 @@ public class MainActivity extends AppCompatActivity implements ReminderAdapter.O
             @Override
             public void onClick(View v) {
                 necessaryEvil.showErrorDialog(new Dialog(MainActivity.this), "What's This?", "Long press a reminder to show more options. Click on a reminder to view reminder details");
+            }
+        });
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                necessaryEvil.showSignOutDialog(MainActivity.this, SignInActivity.class, new Dialog(MainActivity.this), "Sign Out", "Are you sure you want to sign out?");
             }
         });
     }

@@ -5,14 +5,41 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageButton
-        android:id="@+id/main_reminders_show_information"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/main_reminders_header_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/spacing"
-        android:background="@android:color/transparent"
-        android:src="@drawable/information" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/main_user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="middle"
+            android:singleLine="true"
+            android:text="Engels Immanuel"
+            android:textColor="@android:color/darker_gray" />
+
+        <ImageButton
+            android:id="@+id/main_reminders_show_information"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing"
+            android:background="@android:color/transparent"
+            android:src="@drawable/information" />
+
+        <ImageButton
+            android:id="@+id/main_reminders_sign_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing"
+            android:background="@android:color/transparent"
+            android:src="@drawable/signout" />
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/main_reminders_loading_reminders"
@@ -27,7 +54,7 @@
         android:id="@+id/main_reminders_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/main_reminders_show_information"
+        android:layout_below="@+id/main_reminders_header_layout"
         android:layout_marginTop="@dimen/spacing"
         android:visibility="gone" />
 
@@ -36,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_margin="@dimen/spacing"
+        android:layout_marginHorizontal="@dimen/spacing"
         android:gravity="center"
         android:orientation="vertical"
         android:visibility="gone">
