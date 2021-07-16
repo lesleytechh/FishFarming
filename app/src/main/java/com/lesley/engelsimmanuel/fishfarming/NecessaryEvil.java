@@ -2,8 +2,11 @@ package com.lesley.engelsimmanuel.fishfarming;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -11,6 +14,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -96,6 +102,25 @@ public class NecessaryEvil {
 
     public void log(String TAG, String message) {
         Log.wtf(TAG, message);
+    }
+
+    public void showNotification(Activity activity, String channelId, String channelName, String channelDescription, String notificationTitle, String notificationBody, String notificationGroupKey, int notificationId) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, channelId)
+                .setSmallIcon(R.drawable.alarm)
+                .setContentTitle(notificationTitle)
+                .setContentText(notificationBody)
+                .setColor(activity.getResources().getColor(R.color.colorPrimary))
+                .setStyle(new NotificationCompat.BigTextStyle())
+                .setGroup(notificationGroupKey)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription(channelDescription);
+            NotificationManager notificationManager = activity.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+        NotificationManagerCompat.from(activity).notify(notificationId, builder.build());
     }
 
 }

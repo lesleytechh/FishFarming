@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Fish Farming Reminder</string>
     <string name="no_reminders_yet">You have not added any reminders yet</string>
+    <string name="error_loading_reminders">There was an error retrieving reminders</string>
     <string name="stock_name">Stock name</string>
     <string name="stock_date">Date stocked</string>
     <string name="select">Select</string>

@@ -6,19 +6,7 @@
     android:padding="@dimen/spacing">
 
     <TextView
-        android:id="@+id/edit_delete_bottom_sheet_dialog_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableStart="@drawable/editreminder"
-        android:drawablePadding="@dimen/small_spacing"
-        android:paddingVertical="@dimen/small_spacing"
-        android:text="@string/edit"
-        android:visibility="gone"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/colorPrimary" />
-
-    <TextView
-        android:id="@+id/edit_delete_bottom_sheet_dialog_delete"
+        android:id="@+id/delete_bottom_sheet_dialog_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableStart="@drawable/deletereminder"

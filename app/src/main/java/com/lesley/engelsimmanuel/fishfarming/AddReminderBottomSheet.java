@@ -15,16 +15,26 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddReminderBottomSheet extends BottomSheetDialogFragment {
+    private FirebaseAuth auth;
+    private FirebaseFirestore firestore;
     private TextInputEditText stockName, stockDate, stockCost, stockHarvestDate, feedFrequency, treatmentFrequency, changeFrequency, sortFrequency;
     private Button selectStockDate, selectStockHarvestDate, addReminder;
     private Spinner selectStockCostCurrency, selectStockStage, selectFeedFrequencyOccurence, selectTreatmentFrequencyOccurence, selectChangeFrequencyOccurence, selectSortFrequencyOccurence;
-    private NecessaryEvil necessaryEvil = new NecessaryEvil();
+    private final NecessaryEvil necessaryEvil = new NecessaryEvil();
+    private final Constants constants = new Constants();
 
     private String TAG = "AddRmdrBtmSht";
 
@@ -38,6 +48,8 @@ public class AddReminderBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        auth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
         stockName = view.findViewById(R.id.stock_name);
         stockDate = view.findViewById(R.id.stock_date);
         selectStockDate = view.findViewById(R.id.select_stock_date);
@@ -195,25 +207,31 @@ public class AddReminderBottomSheet extends BottomSheetDialogFragment {
 
 
         } else {
-            addReminderToDatabase();
+            uploadReminderToDatabase();
         }
     }
 
-    private void addReminderToDatabase() {
-        ReminderViewModel reminderViewModel = new ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory.getInstance(this.getActivity().getApplication())).get(ReminderViewModel.class);
-
-        reminderViewModel.insert(new Reminder(stockName.getText().toString(), stockDate.getText().toString(),
-                selectStockCostCurrency.getSelectedItem().toString(), stockCost.getText().toString(),
-                selectStockStage.getSelectedItem().toString(), stockHarvestDate.getText().toString(),
-                feedFrequency.getText().toString(), selectFeedFrequencyOccurence.getSelectedItem().toString(),
-                treatmentFrequency.getText().toString(), selectTreatmentFrequencyOccurence.getSelectedItem().toString(),
-                changeFrequency.getText().toString(), selectChangeFrequencyOccurence.getSelectedItem().toString(),
-                sortFrequency.getText().toString(), selectSortFrequencyOccurence.getSelectedItem().toString()));
-
-        necessaryEvil.showToast(getContext(), "Reminder Added");
-
+    private void uploadReminderToDatabase() {
+        Map<String, Object> reminderMap = new HashMap<>();
+        reminderMap.put("stock_name", stockName.getText().toString());
+        reminderMap.put("date_stocked", stockDate.getText().toString());
+        reminderMap.put("currency_of_cost_of_stock", selectStockCostCurrency.getSelectedItem().toString());
+        reminderMap.put("cost_of_stock", stockCost.getText().toString());
+        reminderMap.put("stock_stage", selectStockStage.getSelectedItem().toString());
+        reminderMap.put("expected_date_of_harvest", stockHarvestDate.getText().toString());
+        reminderMap.put("feed_fish_frequency", feedFrequency.getText().toString());
+        reminderMap.put("feed_fish_frequency_occurrence", selectFeedFrequencyOccurence.getSelectedItem().toString());
+        reminderMap.put("treat_fish_frequency", treatmentFrequency.getText().toString());
+        reminderMap.put("treat_fish_frequency_occurrence", selectTreatmentFrequencyOccurence.getSelectedItem().toString());
+        reminderMap.put("change_water_frequency", changeFrequency.getText().toString());
+        reminderMap.put("change_water_frequency_occurrence", selectChangeFrequencyOccurence.getSelectedItem().toString());
+        reminderMap.put("sort_fish_frequency", sortFrequency.getText().toString());
+        reminderMap.put("sort_fish_frequency_occurrence", selectSortFrequencyOccurence.getSelectedItem().toString());
+        reminderMap.put("by", auth.getCurrentUser().getUid());
+        reminderMap.put("timestamp", FieldValue.serverTimestamp());
+        firestore.collection("Reminders").add(reminderMap);
+        necessaryEvil.showNotification(getActivity(), constants.REMINDER_ADDED_CHANNEL_ID, constants.REMINDER_ADDED_CHANNEL_NAME, constants.REMINDER_ADDED_CHANNEL_DESCRIPTION, constants.REMINDER_ADDED_NOTIFICATION_TITLE, constants.REMINDER_ADDED_NOTIFICATION_BODY, constants.REMINDER_ADDED_NOTIFICATION_GROUP_KEY, constants.REMINDER_ADDED_NOTIFICATION_ID);
         dismiss();
-
     }
 
 }
