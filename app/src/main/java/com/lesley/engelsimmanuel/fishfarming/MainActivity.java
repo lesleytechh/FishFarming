@@ -228,6 +228,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        reminderAdapter.stopListening();
+        reminderAdapter.startListening();
     }
 }
