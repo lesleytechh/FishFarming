@@ -104,9 +104,9 @@ public class NecessaryEvil {
         Log.wtf(TAG, message);
     }
 
-    public void showNotification(Activity activity, String channelId, String channelName, String channelDescription, String notificationTitle, String notificationBody, String notificationGroupKey, int notificationId) {
+    public void showNotification(Activity activity, int icon, String channelId, String channelName, String channelDescription, String notificationTitle, String notificationBody, String notificationGroupKey, int notificationId) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, channelId)
-                .setSmallIcon(R.drawable.alarm)
+                .setSmallIcon(icon)
                 .setContentTitle(notificationTitle)
                 .setContentText(notificationBody)
                 .setColor(activity.getResources().getColor(R.color.colorPrimary))

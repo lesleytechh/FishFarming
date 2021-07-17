@@ -230,7 +230,7 @@ public class AddReminderBottomSheet extends BottomSheetDialogFragment {
         reminderMap.put("by", auth.getCurrentUser().getUid());
         reminderMap.put("timestamp", FieldValue.serverTimestamp());
         firestore.collection("Reminders").add(reminderMap);
-        necessaryEvil.showNotification(getActivity(), constants.REMINDER_ADDED_CHANNEL_ID, constants.REMINDER_ADDED_CHANNEL_NAME, constants.REMINDER_ADDED_CHANNEL_DESCRIPTION, constants.REMINDER_ADDED_NOTIFICATION_TITLE, constants.REMINDER_ADDED_NOTIFICATION_BODY, constants.REMINDER_ADDED_NOTIFICATION_GROUP_KEY, constants.REMINDER_ADDED_NOTIFICATION_ID);
+        necessaryEvil.showNotification(getActivity(), R.drawable.addalarm, constants.REMINDER_ADDED_CHANNEL_ID, constants.REMINDER_ADDED_CHANNEL_NAME, constants.REMINDER_ADDED_CHANNEL_DESCRIPTION, constants.REMINDER_ADDED_NOTIFICATION_TITLE, constants.REMINDER_ADDED_NOTIFICATION_BODY, constants.REMINDER_ADDED_NOTIFICATION_GROUP_KEY, constants.REMINDER_ADDED_NOTIFICATION_ID);
         dismiss();
     }
 

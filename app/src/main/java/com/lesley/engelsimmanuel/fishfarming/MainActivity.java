@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView nothingHereErrorIllustration;
     private TextView nothingHereErrorText;
     private FloatingActionButton addReminder;
-    private NecessaryEvil necessaryEvil = new NecessaryEvil();
+    private final NecessaryEvil necessaryEvil = new NecessaryEvil();
+    private final Constants constants = new Constants();
 
     private String TAG = "MainActivity";
 
@@ -194,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             reminderAdapter.getSnapshots().getSnapshot(getAdapterPosition()).getReference().delete();
+                            necessaryEvil.showNotification(MainActivity.this, R.drawable.delete, constants.REMINDER_DELETED_CHANNEL_ID, constants.REMINDER_DELETED_CHANNEL_NAME, constants.REMINDER_DELETED_CHANNEL_DESCRIPTION, constants.REMINDER_DELETED_NOTIFICATION_TITLE, constants.REMINDER_DELETED_NOTIFICATION_BODY, constants.REMINDER_DELETED_NOTIFICATION_GROUP_KEY, constants.REMINDER_DELETED_NOTIFICATION_ID);
                             bottomSheetDialog.dismiss();
                         }
                     });

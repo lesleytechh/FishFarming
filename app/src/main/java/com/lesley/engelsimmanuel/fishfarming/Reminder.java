@@ -1,9 +1,5 @@
 package com.lesley.engelsimmanuel.fishfarming;
 
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import com.google.firebase.Timestamp;
 
 public class Reminder {
