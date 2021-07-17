@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -30,8 +32,12 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -81,6 +87,36 @@ public class MainActivity extends AppCompatActivity {
 
                 if (value != null && value.exists()) {
                     userName.setText(value.getString("name"));
+                }
+            }
+        });
+
+        firestore.collection("Reminders").whereEqualTo("by", auth.getCurrentUser().getUid()).addSnapshotListener(MainActivity.this, new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable QuerySnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                if (error != null) {
+                    return;
+                }
+
+                if (value != null && !value.getDocuments().isEmpty()) {
+                    for (DocumentSnapshot doc : value.getDocuments()) {
+                        if (doc.getBoolean("reminder_booked") == null || !doc.getBoolean("booked")) {
+                            PeriodicWorkRequest feedFishWorkRequest = necessaryEvil.periodicWorkRequest(FeedFishWorker.class, Integer.parseInt(doc.getString("feed_fish_frequency")), doc.getString("feed_fish_frequency_occurrence"), "feedFishWorkRequest");
+                            PeriodicWorkRequest treatFishWorkRequest = necessaryEvil.periodicWorkRequest(TreatFishWorker.class, Integer.parseInt(doc.getString("treat_fish_frequency")), doc.getString("treat_fish_frequency_occurrence"), "treatFishWorkRequest");
+                            PeriodicWorkRequest changeWaterWorkRequest = necessaryEvil.periodicWorkRequest(ChangeWaterWorker.class, Integer.parseInt(doc.getString("change_water_frequency")), doc.getString("change_water_frequency_occurrence"), "changeWaterWorkRequest");
+                            PeriodicWorkRequest sortFishWorkRequest = necessaryEvil.periodicWorkRequest(SortFishWorker.class, Integer.parseInt(doc.getString("sort_fish_frequency")), doc.getString("sort_fish_frequency_occurrence"), "sortFishWorkRequest");
+
+                            List<PeriodicWorkRequest> requests = new ArrayList<>();
+                            requests.add(feedFishWorkRequest);
+                            requests.add(treatFishWorkRequest);
+                            requests.add(changeWaterWorkRequest);
+                            requests.add(sortFishWorkRequest);
+
+                            WorkManager.getInstance(MainActivity.this).enqueue(requests);
+
+                            doc.getReference().update("reminder_booked", true);
+                        }
+                    }
                 }
             }
         });

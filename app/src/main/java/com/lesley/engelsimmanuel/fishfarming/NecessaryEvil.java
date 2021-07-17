@@ -15,10 +15,22 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.TimeUnit;
 
 public class NecessaryEvil {
     public void showLoadingDialog(final Dialog d, String loadingBody) {
@@ -89,9 +101,29 @@ public class NecessaryEvil {
             @Override
             public void onClick(View v) {
                 d.dismiss();
-                FirebaseAuth.getInstance().signOut();
-                currentActivity.startActivity(new Intent(currentActivity, destinationActivityClass));
-                currentActivity.finish();
+                Dialog dg = new Dialog(currentActivity);
+                showLoadingDialog(dg, currentActivity.getString(R.string.signing_out));
+                FirebaseFirestore.getInstance().collection("Reminders").whereEqualTo("by", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnSuccessListener(currentActivity, new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.getDocuments().isEmpty()) {
+                            for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
+                                doc.getReference().update("reminder_booked", false);
+                            }
+                        }
+                        dg.dismiss();
+                        WorkManager.getInstance(currentActivity).cancelAllWork();
+                        FirebaseAuth.getInstance().signOut();
+                        currentActivity.startActivity(new Intent(currentActivity, destinationActivityClass));
+                        currentActivity.finish();
+                    }
+                }).addOnFailureListener(currentActivity, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull @NotNull Exception e) {
+                        dg.dismiss();
+                        showErrorDialog(new Dialog(currentActivity), "Oops", "We could not sign you out. Please try again");
+                    }
+                });
             }
         });
     }
@@ -123,4 +155,18 @@ public class NecessaryEvil {
         NotificationManagerCompat.from(activity).notify(notificationId, builder.build());
     }
 
+    public PeriodicWorkRequest periodicWorkRequest(Class workerClass, long repeatInterval, String field, String tag) {
+        switch (field) {
+            case "Hour(s)":
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval, TimeUnit.HOURS).addTag(tag).build();
+            case "Day(s)":
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval, TimeUnit.DAYS).addTag(tag).build();
+            case "Week(s)":
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 7, TimeUnit.DAYS).addTag(tag).build();
+            case "Month(s)":
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 30, TimeUnit.DAYS).addTag(tag).build();
+            default:
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 365, TimeUnit.DAYS).addTag(tag).build();
+        }
+    }
 }

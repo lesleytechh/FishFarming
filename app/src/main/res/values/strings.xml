@@ -45,6 +45,7 @@
     <string name="creating_user">Creating User...</string>
     <string name="nope">Nope</string>
     <string name="yep">Yep</string>
+    <string name="signing_out">Signing Out...</string>
     <string-array name="frequency">
         <item>Hour(s)</item>
         <item>Day(s)</item>
