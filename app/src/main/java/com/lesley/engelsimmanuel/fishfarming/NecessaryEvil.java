@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.work.Data;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -33,6 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.concurrent.TimeUnit;
 
 public class NecessaryEvil {
+    final String TAG = "necEvl";
+
     public void showLoadingDialog(final Dialog d, String loadingBody) {
         d.setContentView(R.layout.loading_dialog);
         d.setCanceledOnTouchOutside(false);
@@ -103,17 +106,26 @@ public class NecessaryEvil {
                 d.dismiss();
                 Dialog dg = new Dialog(currentActivity);
                 showLoadingDialog(dg, currentActivity.getString(R.string.signing_out));
+                log(TAG, "signing out, uid is still " + FirebaseAuth.getInstance().getCurrentUser().getUid());
                 FirebaseFirestore.getInstance().collection("Reminders").whereEqualTo("by", FirebaseAuth.getInstance().getCurrentUser().getUid()).get().addOnSuccessListener(currentActivity, new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        log(TAG, "onSuccess");
                         if (!queryDocumentSnapshots.getDocuments().isEmpty()) {
+                            log(TAG, "queryDocumentSnapshots.getDocuments() is not empty");
                             for (DocumentSnapshot doc : queryDocumentSnapshots.getDocuments()) {
                                 doc.getReference().update("reminder_booked", false);
+                                log(TAG, "reminder_booked field in " + doc.getReference().getId() + "updated to " + doc.getBoolean("reminder_booked"));
                             }
+                        } else {
+                            log(TAG, "queryDocumentSnapshots.getDocuments() is empty");
                         }
                         dg.dismiss();
+                        log(TAG, "signing out dialog dismissed");
                         WorkManager.getInstance(currentActivity).cancelAllWork();
+                        log(TAG, "all work canceled, uid is " + FirebaseAuth.getInstance().getCurrentUser().getUid());
                         FirebaseAuth.getInstance().signOut();
+                        log(TAG, "user signed out, current user is " + FirebaseAuth.getInstance().getCurrentUser());
                         currentActivity.startActivity(new Intent(currentActivity, destinationActivityClass));
                         currentActivity.finish();
                     }
@@ -136,7 +148,7 @@ public class NecessaryEvil {
         Log.wtf(TAG, message);
     }
 
-    public void showNotification(Activity activity, int icon, String channelId, String channelName, String channelDescription, String notificationTitle, String notificationBody, String notificationGroupKey, int notificationId) {
+    public void showNotification(Context activity, int icon, String channelId, String channelName, String channelDescription, String notificationTitle, String notificationBody, String notificationGroupKey, int notificationId) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(activity, channelId)
                 .setSmallIcon(icon)
                 .setContentTitle(notificationTitle)
@@ -155,18 +167,22 @@ public class NecessaryEvil {
         NotificationManagerCompat.from(activity).notify(notificationId, builder.build());
     }
 
-    public PeriodicWorkRequest periodicWorkRequest(Class workerClass, long repeatInterval, String field, String tag) {
+    public PeriodicWorkRequest periodicWorkRequest(Class workerClass, long repeatInterval, String field, String tag, String key, String value) {
         switch (field) {
             case "Hour(s)":
-                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval, TimeUnit.HOURS).addTag(tag).build();
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval, TimeUnit.HOURS).setInitialDelay(repeatInterval, TimeUnit.HOURS).setInputData(new Data.Builder().putString(key, value).build()).addTag(tag).build();
             case "Day(s)":
-                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval, TimeUnit.DAYS).addTag(tag).build();
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval, TimeUnit.DAYS).setInitialDelay(repeatInterval, TimeUnit.DAYS).setInputData(new Data.Builder().putString(key, value).build()).addTag(tag).build();
             case "Week(s)":
-                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 7, TimeUnit.DAYS).addTag(tag).build();
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 7, TimeUnit.DAYS).setInitialDelay(repeatInterval * 7, TimeUnit.DAYS).setInputData(new Data.Builder().putString(key, value).build()).addTag(tag).build();
             case "Month(s)":
-                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 30, TimeUnit.DAYS).addTag(tag).build();
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 30, TimeUnit.DAYS).setInitialDelay(repeatInterval * 30, TimeUnit.DAYS).setInputData(new Data.Builder().putString(key, value).build()).addTag(tag).build();
             default:
-                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 365, TimeUnit.DAYS).addTag(tag).build();
+                return new PeriodicWorkRequest.Builder(workerClass, repeatInterval * 365, TimeUnit.DAYS).setInitialDelay(repeatInterval * 365, TimeUnit.DAYS).setInputData(new Data.Builder().putString(key, value).build()).addTag(tag).build();
         }
+    }
+
+    public void cancelWorkForDeletedReminder(Activity activity, String tag) {
+        WorkManager.getInstance(activity).cancelAllWorkByTag(tag);
     }
 }

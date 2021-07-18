@@ -17,13 +17,15 @@ public class Reminder {
     private String change_water_frequency_occurrence;
     private String sort_fish_frequency;
     private String sort_fish_frequency_occurrence;
+    private boolean reminder_booked;
     private String by;
     private Timestamp timestamp;
 
     // required empty constructor, needed for firebase
-    public Reminder() { }
+    public Reminder() {
+    }
 
-    public Reminder(String stock_name, String date_stocked, String currency_of_cost_of_stock, String cost_of_stock, String stock_stage, String expected_date_of_harvest, String feed_fish_frequency, String feed_fish_frequency_occurrence, String treat_fish_frequency, String treat_fish_frequency_occurrence, String change_water_frequency, String change_water_frequency_occurrence, String sort_fish_frequency, String sort_fish_frequency_occurrence, String by, Timestamp timestamp) {
+    public Reminder(String stock_name, String date_stocked, String currency_of_cost_of_stock, String cost_of_stock, String stock_stage, String expected_date_of_harvest, String feed_fish_frequency, String feed_fish_frequency_occurrence, String treat_fish_frequency, String treat_fish_frequency_occurrence, String change_water_frequency, String change_water_frequency_occurrence, String sort_fish_frequency, String sort_fish_frequency_occurrence, boolean reminder_booked, String by, Timestamp timestamp) {
         this.stock_name = stock_name;
         this.date_stocked = date_stocked;
         this.currency_of_cost_of_stock = currency_of_cost_of_stock;
@@ -38,6 +40,7 @@ public class Reminder {
         this.change_water_frequency_occurrence = change_water_frequency_occurrence;
         this.sort_fish_frequency = sort_fish_frequency;
         this.sort_fish_frequency_occurrence = sort_fish_frequency_occurrence;
+        this.reminder_booked = reminder_booked;
         this.by = by;
         this.timestamp = timestamp;
     }
@@ -96,6 +99,10 @@ public class Reminder {
 
     public String getSort_fish_frequency_occurrence() {
         return sort_fish_frequency_occurrence;
+    }
+
+    public boolean isReminder_booked() {
+        return reminder_booked;
     }
 
     public String getBy() {

@@ -100,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
                 if (value != null && !value.getDocuments().isEmpty()) {
                     for (DocumentSnapshot doc : value.getDocuments()) {
-                        if (doc.getBoolean("reminder_booked") == null || !doc.getBoolean("booked")) {
-                            PeriodicWorkRequest feedFishWorkRequest = necessaryEvil.periodicWorkRequest(FeedFishWorker.class, Integer.parseInt(doc.getString("feed_fish_frequency")), doc.getString("feed_fish_frequency_occurrence"), "feedFishWorkRequest");
-                            PeriodicWorkRequest treatFishWorkRequest = necessaryEvil.periodicWorkRequest(TreatFishWorker.class, Integer.parseInt(doc.getString("treat_fish_frequency")), doc.getString("treat_fish_frequency_occurrence"), "treatFishWorkRequest");
-                            PeriodicWorkRequest changeWaterWorkRequest = necessaryEvil.periodicWorkRequest(ChangeWaterWorker.class, Integer.parseInt(doc.getString("change_water_frequency")), doc.getString("change_water_frequency_occurrence"), "changeWaterWorkRequest");
-                            PeriodicWorkRequest sortFishWorkRequest = necessaryEvil.periodicWorkRequest(SortFishWorker.class, Integer.parseInt(doc.getString("sort_fish_frequency")), doc.getString("sort_fish_frequency_occurrence"), "sortFishWorkRequest");
+                        if (!doc.getBoolean("reminder_booked")) {
+                            PeriodicWorkRequest feedFishWorkRequest = necessaryEvil.periodicWorkRequest(FeedFishWorker.class, Integer.parseInt(doc.getString("feed_fish_frequency")), doc.getString("feed_fish_frequency_occurrence"), "feedFishWorkRequest_" + doc.getReference().getId(), "stock_name", doc.getString("stock_name"));
+                            PeriodicWorkRequest treatFishWorkRequest = necessaryEvil.periodicWorkRequest(TreatFishWorker.class, Integer.parseInt(doc.getString("treat_fish_frequency")), doc.getString("treat_fish_frequency_occurrence"), "treatFishWorkRequest_" + doc.getReference().getId(), "stock_name", doc.getString("stock_name"));
+                            PeriodicWorkRequest changeWaterWorkRequest = necessaryEvil.periodicWorkRequest(ChangeWaterWorker.class, Integer.parseInt(doc.getString("change_water_frequency")), doc.getString("change_water_frequency_occurrence"), "changeWaterWorkRequest_" + doc.getReference().getId(), "stock_name", doc.getString("stock_name"));
+                            PeriodicWorkRequest sortFishWorkRequest = necessaryEvil.periodicWorkRequest(SortFishWorker.class, Integer.parseInt(doc.getString("sort_fish_frequency")), doc.getString("sort_fish_frequency_occurrence"), "sortFishWorkRequest_" + doc.getReference().getId(), "stock_name", doc.getString("stock_name"));
 
                             List<PeriodicWorkRequest> requests = new ArrayList<>();
                             requests.add(feedFishWorkRequest);
@@ -115,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
                             WorkManager.getInstance(MainActivity.this).enqueue(requests);
 
                             doc.getReference().update("reminder_booked", true);
+
+                            necessaryEvil.log(TAG, "all works have been scheduled");
+                            //necessaryEvil.showNotification(MainActivity.this, R.drawable.alarm, constants.REMINDER_WILL_ALERT_CHANNEL_ID, constants.REMINDER_WILL_ALERT_CHANNEL_NAME, constants.REMINDER_WILL_ALERT_CHANNEL_DESCRIPTION, constants.REMINDER_WILL_ALERT_NOTIFICATION_TITLE, constants.REMINDER_WILL_ALERT_NOTIFICATION_BODY, constants.REMINDER_WILL_ALERT_NOTIFICATION_GROUP_KEY, constants.REMINDER_WILL_ALERT_NOTIFICATION_ID);
                         }
                     }
                 }
@@ -230,6 +233,10 @@ public class MainActivity extends AppCompatActivity {
                     bottomSheetDialog.findViewById(R.id.delete_bottom_sheet_dialog_delete).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            necessaryEvil.cancelWorkForDeletedReminder(MainActivity.this, "feedFishWorkRequest_" + reminderAdapter.getSnapshots().getSnapshot(getAdapterPosition()).getReference().getId());
+                            necessaryEvil.cancelWorkForDeletedReminder(MainActivity.this, "treatFishWorkRequest_" + reminderAdapter.getSnapshots().getSnapshot(getAdapterPosition()).getReference().getId());
+                            necessaryEvil.cancelWorkForDeletedReminder(MainActivity.this, "changeWaterWorkRequest_" + reminderAdapter.getSnapshots().getSnapshot(getAdapterPosition()).getReference().getId());
+                            necessaryEvil.cancelWorkForDeletedReminder(MainActivity.this, "sortFishWorkRequest_" + reminderAdapter.getSnapshots().getSnapshot(getAdapterPosition()).getReference().getId());
                             reminderAdapter.getSnapshots().getSnapshot(getAdapterPosition()).getReference().delete();
                             necessaryEvil.showNotification(MainActivity.this, R.drawable.delete, constants.REMINDER_DELETED_CHANNEL_ID, constants.REMINDER_DELETED_CHANNEL_NAME, constants.REMINDER_DELETED_CHANNEL_DESCRIPTION, constants.REMINDER_DELETED_NOTIFICATION_TITLE, constants.REMINDER_DELETED_NOTIFICATION_BODY, constants.REMINDER_DELETED_NOTIFICATION_GROUP_KEY, constants.REMINDER_DELETED_NOTIFICATION_ID);
                             bottomSheetDialog.dismiss();

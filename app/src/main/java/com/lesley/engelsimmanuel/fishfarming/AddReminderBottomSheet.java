@@ -227,6 +227,7 @@ public class AddReminderBottomSheet extends BottomSheetDialogFragment {
         reminderMap.put("change_water_frequency_occurrence", selectChangeFrequencyOccurence.getSelectedItem().toString());
         reminderMap.put("sort_fish_frequency", sortFrequency.getText().toString());
         reminderMap.put("sort_fish_frequency_occurrence", selectSortFrequencyOccurence.getSelectedItem().toString());
+        reminderMap.put("reminder_booked", false);
         reminderMap.put("by", auth.getCurrentUser().getUid());
         reminderMap.put("timestamp", FieldValue.serverTimestamp());
         firestore.collection("Reminders").add(reminderMap);
