@@ -140,10 +140,6 @@ public class NecessaryEvil {
         });
     }
 
-    public void showToast(Context context, String toastMessage) {
-        Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show();
-    }
-
     public void log(String TAG, String message) {
         Log.wtf(TAG, message);
     }
